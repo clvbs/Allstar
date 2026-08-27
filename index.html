@@ -278,10 +278,10 @@ document.getElementById("signupForm").addEventListener("submit", async function(
     const password = document.getElementById("signupPassword").value;
     const confirm = document.getElementById("confirmPassword").value;
 
-    if (!/^[0-9]{4}$/.test(password)) {
+    if (!/^[0-9]{8}$/.test(password)) {
         showMessage(
             "signupMessage",
-            "Ang password ay dapat eksaktong 4 digits lamang.",
+            "Ang password ay dapat eksaktong 8 digits lamang.",
             "error"
         );
         return;
