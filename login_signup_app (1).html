@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Sign Up</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f7f7f7, #e8e8e8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #222;
+    }
+    .container {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    }
+    h1 {
+        text-align: center;
+        margin: 0 0 8px;
+        font-size: 28px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 24px;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+    label {
+        display: block;
+        margin: 14px 0 7px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 16px;
+        outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: #555;
+    }
+    button {
+        width: 100%;
+        padding: 13px;
+        border: 0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 18px;
+    }
+    .primary {
+        background: #222;
+        color: white;
+    }
+    .secondary {
+        background: #eee;
+        color: #222;
+        margin-top: 10px;
+    }
+    .logout {
+        background: #b00020;
+        color: white;
+    }
+    .message {
+        display: none;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 14px;
+        font-size: 14px;
+    }
+    .error { background: #ffe5e5; color: #a00000; }
+    .success { background: #e4f7e8; color: #126b25; }
+    .home-box {
+        text-align: center;
+        padding: 15px 0;
+    }
+    .home-box h2 { margin-bottom: 8px; }
+    .note {
+        font-size: 12px;
+        color: #777;
+        margin-top: 8px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN PAGE -->
+    <section id="loginPage" class="page active">
+        <h1>Login</h1>
+        <div class="subtitle">Welcome!</div>
+
+        <form id="loginForm">
+            <label for="loginUsername">Username</label>
+            <input id="loginUsername" type="text" placeholder="Enter username" required>
+
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" inputmode="numeric"
+                   maxlength="4" pattern="[0-9]{4}" placeholder="4-digit password" required>
+
+            <button class="primary" type="submit">Login</button>
+        </form>
+
+        <button class="secondary" id="showSignup">Sign Up</button>
+
+        <div id="loginMessage" class="message"></div>
+    </section>
+
+    <!-- SIGN UP PAGE -->
+    <section id="signupPage" class="page">
+        <h1>Sign Up</h1>
+        <div class="subtitle">Create your account</div>
+
+        <form id="signupForm">
+            <label for="nickname">Nickname</label>
+            <input id="nickname" type="text" placeholder="Enter nickname" required>
+
+            <label for="brand">Favorite brand ng alak</label>
+            <input id="brand" type="text" placeholder="Enter favorite brand" required>
+
+            <label for="reason">Reason ng pag-inom</label>
+            <textarea id="reason" rows="3" placeholder="Enter reason" required></textarea>
+
+            <label for="smoking">Nagyoyosi ba?</label>
+            <select id="smoking" required>
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <label for="status">Single or Taken?</label>
+            <select id="status" required>
+                <option value="">Select</option>
+                <option value="Single">Single</option>
+                <option value="Taken">Taken</option>
+            </select>
+
+            <label for="signupUsername">Username</label>
+            <input id="signupUsername" type="text" placeholder="Create username" required>
+
+            <label for="signupPassword">Password</label>
+            <input id="signupPassword" type="password" inputmode="numeric"
+                   maxlength="4" pattern="[0-9]{4}" placeholder="4 digits only" required>
+            <div class="note">Password must contain exactly 4 numbers.</div>
+
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" inputmode="numeric"
+                   maxlength="4" pattern="[0-9]{4}" placeholder="Re-enter password" required>
+
+            <button class="primary" type="submit">Sign Up</button>
+        </form>
+
+        <button class="secondary" id="backToLogin">Back to Login</button>
+
+        <div id="signupMessage" class="message"></div>
+    </section>
+
+    <!-- HOME PAGE -->
+    <section id="homePage" class="page">
+        <div class="home-box">
+            <h1>Welcome!</h1>
+            <h2 id="welcomeName"></h2>
+            <p>Successful ang iyong login.</p>
+        </div>
+
+        <button class="logout" id="logoutBtn">Logout</button>
+    </section>
+
+</div>
+
+<script>
+const loginPage = document.getElementById("loginPage");
+const signupPage = document.getElementById("signupPage");
+const homePage = document.getElementById("homePage");
+
+function showPage(page) {
+    [loginPage, signupPage, homePage].forEach(p => p.classList.remove("active"));
+    page.classList.add("active");
+    clearMessages();
+}
+
+function showMessage(elementId, text, type) {
+    const el = document.getElementById(elementId);
+    el.textContent = text;
+    el.className = "message " + type;
+    el.style.display = "block";
+}
+
+function clearMessages() {
+    document.querySelectorAll(".message").forEach(el => {
+        el.style.display = "none";
+        el.textContent = "";
+    });
+}
+
+function onlyFourDigits(input) {
+    input.value = input.value.replace(/[^0-9]/g, "").slice(0, 4);
+}
+
+["loginPassword", "signupPassword", "confirmPassword"].forEach(id => {
+    document.getElementById(id).addEventListener("input", function() {
+        onlyFourDigits(this);
+    });
+});
+
+document.getElementById("showSignup").addEventListener("click", () => {
+    showPage(signupPage);
+});
+
+document.getElementById("backToLogin").addEventListener("click", () => {
+    showPage(loginPage);
+});
+
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nickname = document.getElementById("nickname").value.trim();
+    const brand = document.getElementById("brand").value.trim();
+    const reason = document.getElementById("reason").value.trim();
+    const smoking = document.getElementById("smoking").value;
+    const status = document.getElementById("status").value;
+    const username = document.getElementById("signupUsername").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if (!/^[0-9]{4}$/.test(password)) {
+        showMessage("signupMessage", "Ang password ay dapat eksaktong 4 digits lamang.", "error");
+        return;
+    }
+
+    if (password !== confirm) {
+        showMessage("signupMessage", "Hindi magkapareho ang Password at Confirm Password.", "error");
+        return;
+    }
+
+    const existingUser = JSON.parse(localStorage.getItem("userAccount"));
+
+    if (existingUser && existingUser.username === username) {
+        showMessage("signupMessage", "Ginagamit na ang username na ito. Pumili ng iba.", "error");
+        return;
+    }
+
+    const account = {
+        nickname,
+        brand,
+        reason,
+        smoking,
+        status,
+        username,
+        password
+    };
+
+    localStorage.setItem("userAccount", JSON.stringify(account));
+
+    this.reset();
+
+    showPage(loginPage);
+    showMessage("loginMessage", "Successful ang Sign Up! Gamitin ang iyong username at 4-digit password para mag-login.", "success");
+});
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const account = JSON.parse(localStorage.getItem("userAccount"));
+
+    if (!account) {
+        showMessage("loginMessage", "Wala pang registered account. Mag-Sign Up muna.", "error");
+        return;
+    }
+
+    if (account.username === username && account.password === password) {
+        document.getElementById("welcomeName").textContent = account.nickname;
+        this.reset();
+        showPage(homePage);
+    } else {
+        showMessage("loginMessage", "Maling username o password.", "error");
+    }
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    showPage(loginPage);
+    showMessage("loginMessage", "Naka-logout ka na.", "success");
+});
+</script>
+
+</body>
+</html>
