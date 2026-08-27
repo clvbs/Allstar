@@ -185,7 +185,28 @@
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBzn5caBEcMW8V2j7v8GFOVbJXQbic7uOQ",
+    authDomain: "allsta.firebaseapp.com",
+    projectId: "allsta",
+    storageBucket: "allsta.firebasestorage.app",
+    messagingSenderId: "184323796516",
+    appId: "1:184323796516:web:489fef1d9f6f5d9c64f2b1",
+    measurementId: "G-D2XEYRHKWR"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const loginPage = document.getElementById("loginPage");
 const signupPage = document.getElementById("signupPage");
 const homePage = document.getElementById("homePage");
@@ -228,7 +249,7 @@ document.getElementById("backToLogin").addEventListener("click", () => {
     showPage(loginPage);
 });
 
-document.getElementById("signupForm").addEventListener("submit", function(e) {
+document.getElementById("signupForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
     const nickname = document.getElementById("nickname").value.trim();
@@ -237,63 +258,35 @@ document.getElementById("signupForm").addEventListener("submit", function(e) {
     const smoking = document.getElementById("smoking").value;
     const status = document.getElementById("status").value;
     const username = document.getElementById("signupUsername").value.trim();
-    const password = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("confirmPassword").value;
 
-    if (!/^[0-9]{4}$/.test(password)) {
-        showMessage("signupMessage", "Ang password ay dapat eksaktong 4 digits lamang.", "error");
-        return;
-    }
+    try {
+        await addDoc(collection(db, "submissions"), {
+            nickname,
+            brand,
+            reason,
+            smoking,
+            status,
+            username,
+            submittedAt: serverTimestamp()
+        });
 
-    if (password !== confirm) {
-        showMessage("signupMessage", "Hindi magkapareho ang Password at Confirm Password.", "error");
-        return;
-    }
-
-    const existingUser = JSON.parse(localStorage.getItem("userAccount"));
-
-    if (existingUser && existingUser.username === username) {
-        showMessage("signupMessage", "Ginagamit na ang username na ito. Pumili ng iba.", "error");
-        return;
-    }
-
-    const account = {
-        nickname,
-        brand,
-        reason,
-        smoking,
-        status,
-        username,
-        password
-    };
-
-    localStorage.setItem("userAccount", JSON.stringify(account));
-
-    this.reset();
-
-    showPage(loginPage);
-    showMessage("loginMessage", "Successful ang Sign Up! Gamitin ang iyong username at 4-digit password para mag-login.", "success");
-});
-
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    const account = JSON.parse(localStorage.getItem("userAccount"));
-
-    if (!account) {
-        showMessage("loginMessage", "Wala pang registered account. Mag-Sign Up muna.", "error");
-        return;
-    }
-
-    if (account.username === username && account.password === password) {
-        document.getElementById("welcomeName").textContent = account.nickname;
         this.reset();
-        showPage(homePage);
-    } else {
-        showMessage("loginMessage", "Maling username o password.", "error");
+        showPage(loginPage);
+
+        showMessage(
+            "loginMessage",
+            "Successful ang Sign Up!",
+            "success"
+        );
+
+    } catch (error) {
+        console.error(error);
+
+        showMessage(
+            "signupMessage",
+            "Hindi na-save ang information.",
+            "error"
+        );
     }
 });
 
