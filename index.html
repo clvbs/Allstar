@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login & Sign Up</title>
+
 <style>
-    * { box-sizing: border-box; }
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         margin: 0;
         min-height: 100vh;
@@ -17,6 +21,7 @@
         padding: 20px;
         color: #222;
     }
+
     .container {
         width: 100%;
         max-width: 420px;
@@ -25,25 +30,37 @@
         padding: 28px;
         box-shadow: 0 10px 30px rgba(0,0,0,.12);
     }
+
     h1 {
         text-align: center;
         margin: 0 0 8px;
         font-size: 28px;
     }
+
     .subtitle {
         text-align: center;
         color: #777;
         margin-bottom: 24px;
     }
-    .page { display: none; }
-    .page.active { display: block; }
+
+    .page {
+        display: none;
+    }
+
+    .page.active {
+        display: block;
+    }
+
     label {
         display: block;
         margin: 14px 0 7px;
         font-weight: bold;
         font-size: 14px;
     }
-    input, select, textarea {
+
+    input,
+    select,
+    textarea {
         width: 100%;
         padding: 13px;
         border: 1px solid #ccc;
@@ -51,9 +68,13 @@
         font-size: 16px;
         outline: none;
     }
-    input:focus, select:focus, textarea:focus {
+
+    input:focus,
+    select:focus,
+    textarea:focus {
         border-color: #555;
     }
+
     button {
         width: 100%;
         padding: 13px;
@@ -64,19 +85,23 @@
         cursor: pointer;
         margin-top: 18px;
     }
+
     .primary {
         background: #222;
         color: white;
     }
+
     .secondary {
         background: #eee;
         color: #222;
         margin-top: 10px;
     }
+
     .logout {
         background: #b00020;
         color: white;
     }
+
     .message {
         display: none;
         padding: 10px;
@@ -84,13 +109,26 @@
         margin-top: 14px;
         font-size: 14px;
     }
-    .error { background: #ffe5e5; color: #a00000; }
-    .success { background: #e4f7e8; color: #126b25; }
+
+    .error {
+        background: #ffe5e5;
+        color: #a00000;
+    }
+
+    .success {
+        background: #e4f7e8;
+        color: #126b25;
+    }
+
     .home-box {
         text-align: center;
         padding: 15px 0;
     }
-    .home-box h2 { margin-bottom: 8px; }
+
+    .home-box h2 {
+        margin-bottom: 8px;
+    }
+
     .note {
         font-size: 12px;
         color: #777;
@@ -98,45 +136,82 @@
     }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
     <!-- LOGIN PAGE -->
     <section id="loginPage" class="page active">
+
         <h1>Login</h1>
         <div class="subtitle">Welcome!</div>
 
         <form id="loginForm">
+
             <label for="loginUsername">Username</label>
-            <input id="loginUsername" type="text" placeholder="Enter username" required>
+            <input
+                id="loginUsername"
+                type="text"
+                placeholder="Enter username"
+                required
+            >
 
             <label for="loginPassword">Password</label>
-            <input id="loginPassword" type="password" inputmode="numeric"
-                   maxlength="8" pattern="[0-9]{8}" placeholder="8-digit password" required>
+            <input
+                id="loginPassword"
+                type="password"
+                minlength="8"
+                placeholder="Enter password"
+                required
+            >
 
-            <button class="primary" type="submit">Login</button>
+            <button class="primary" type="submit">
+                Login
+            </button>
+
         </form>
 
-        <button class="secondary" id="showSignup">Sign Up</button>
+        <button class="secondary" id="showSignup">
+            Sign Up
+        </button>
 
         <div id="loginMessage" class="message"></div>
+
     </section>
+
 
     <!-- SIGN UP PAGE -->
     <section id="signupPage" class="page">
+
         <h1>Sign Up</h1>
         <div class="subtitle">Create your account</div>
 
         <form id="signupForm">
+
             <label for="nickname">Nickname</label>
-            <input id="nickname" type="text" placeholder="Enter nickname" required>
+            <input
+                id="nickname"
+                type="text"
+                placeholder="Enter nickname"
+                required
+            >
 
             <label for="brand">Favorite brand ng alak</label>
-            <input id="brand" type="text" placeholder="Enter favorite brand" required>
+            <input
+                id="brand"
+                type="text"
+                placeholder="Enter favorite brand"
+                required
+            >
 
             <label for="reason">Reason ng pag-inom</label>
-            <textarea id="reason" rows="3" placeholder="Enter reason" required></textarea>
+            <textarea
+                id="reason"
+                rows="3"
+                placeholder="Enter reason"
+                required
+            ></textarea>
 
             <label for="smoking">Nagyoyosi ba?</label>
             <select id="smoking" required>
@@ -153,40 +228,78 @@
             </select>
 
             <label for="signupUsername">Username</label>
-            <input id="signupUsername" type="text" placeholder="Create username" required>
+            <input
+                id="signupUsername"
+                type="text"
+                placeholder="Create username"
+                required
+            >
 
             <label for="signupPassword">Password</label>
-            <input id="signupPassword" type="password" inputmode="numeric"
-                   maxlength="8" pattern="[0-9]{8}" placeholder="8 digits only" required>
-            <div class="note">Password must contain exactly 8 numbers.</div>
+            <input
+                id="signupPassword"
+                type="password"
+                minlength="8"
+                placeholder="Enter password (8+ characters)"
+                required
+            >
+
+            <div class="note">
+                Password must contain at least 8 characters.
+            </div>
 
             <label for="confirmPassword">Confirm Password</label>
-            <input id="confirmPassword" type="password" inputmode="numeric"
-                   maxlength="8" pattern="[0-9]{8}" placeholder="Re-enter password" required>
+            <input
+                id="confirmPassword"
+                type="password"
+                minlength="8"
+                placeholder="Re-enter password"
+                required
+            >
 
-            <button class="primary" type="submit">Sign Up</button>
+            <button class="primary" type="submit">
+                Sign Up
+            </button>
+
         </form>
 
-        <button class="secondary" id="backToLogin">Back to Login</button>
+        <button class="secondary" id="backToLogin">
+            Back to Login
+        </button>
 
         <div id="signupMessage" class="message"></div>
+
     </section>
+
 
     <!-- HOME PAGE -->
     <section id="homePage" class="page">
+
         <div class="home-box">
+
             <h1>Welcome sa Allstar!</h1>
+
             <h2 id="welcomeName"></h2>
+
             <p>Successful ang iyong login.</p>
+
         </div>
 
-        <button class="logout" id="logoutBtn">Logout</button>
+        <button class="logout" id="logoutBtn">
+            Logout
+        </button>
+
     </section>
 
 </div>
 
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
 
 import {
     getAuth,
@@ -195,6 +308,7 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
+
 import {
     getFirestore,
     collection,
@@ -202,230 +316,387 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+
 const firebaseConfig = {
+
     apiKey: "AIzaSyBzn5caBEcMW8V2j7v8GFOVbJXQbic7uOQ",
+
     authDomain: "allsta.firebaseapp.com",
+
     projectId: "allsta",
+
     storageBucket: "allsta.firebasestorage.app",
+
     messagingSenderId: "184323796516",
+
     appId: "1:184323796516:web:489fef1d9f6f5d9c64f2b1",
+
     measurementId: "G-D2XEYRHKWR"
 };
 
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
-const loginPage = document.getElementById("loginPage");
-const signupPage = document.getElementById("signupPage");
-const homePage = document.getElementById("homePage");
+
+const loginPage =
+    document.getElementById("loginPage");
+
+const signupPage =
+    document.getElementById("signupPage");
+
+const homePage =
+    document.getElementById("homePage");
+
 
 function showPage(page) {
-    [loginPage, signupPage, homePage].forEach(p =>
-        p.classList.remove("active")
-    );
+
+    [
+        loginPage,
+        signupPage,
+        homePage
+    ].forEach(p => {
+        p.classList.remove("active");
+    });
 
     page.classList.add("active");
+
     clearMessages();
 }
 
+
 function showMessage(elementId, text, type) {
-    const el = document.getElementById(elementId);
+
+    const el =
+        document.getElementById(elementId);
 
     el.textContent = text;
-    el.className = "message " + type;
+
+    el.className =
+        "message " + type;
+
     el.style.display = "block";
 }
 
+
 function clearMessages() {
-    document.querySelectorAll(".message").forEach(el => {
-        el.style.display = "none";
-        el.textContent = "";
-    });
-}
 
-function onlyEightDigits(input) {
-    input.value = input.value.replace(/[^0-9]/g, "").slice(0, 8);
-}
+    document
+        .querySelectorAll(".message")
+        .forEach(el => {
 
-[
-    "loginPassword",
-    "signupPassword",
-    "confirmPassword"
-].forEach(id => {
-    document.getElementById(id).addEventListener("input", function() {
-        onlyFourDigits(this);
-    });
-});
+            el.style.display = "none";
 
-document.getElementById("showSignup").addEventListener("click", () => {
-    showPage(signupPage);
-});
-
-document.getElementById("backToLogin").addEventListener("click", () => {
-    showPage(loginPage);
-});
-
-document.getElementById("signupForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const nickname = document.getElementById("nickname").value.trim();
-    const brand = document.getElementById("brand").value.trim();
-    const reason = document.getElementById("reason").value.trim();
-    const smoking = document.getElementById("smoking").value;
-    const status = document.getElementById("status").value;
-    const username = document.getElementById("signupUsername").value.trim();
-    const password = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("confirmPassword").value;
-
-    if (!/^[0-9]{8}$/.test(password)) {
-        showMessage(
-            "signupMessage",
-            "Ang password ay dapat eksaktong 8 digits lamang.",
-            "error"
-        );
-        return;
-    }
-
-    if (password !== confirm) {
-        showMessage(
-            "signupMessage",
-            "Hindi magkapareho ang Password at Confirm Password.",
-            "error"
-        );
-        return;
-    }
-
-    /*
-      Firebase Authentication requires an email.
-      Gagawa tayo ng internal email mula sa username.
-    */
-    const email = username.toLowerCase() + "@allstar-demo.local";
-
-    try {
-
-        const userCredential =
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-        const user = userCredential.user;
-
-        await addDoc(collection(db, "submissions"), {
-            uid: user.uid,
-            nickname: nickname,
-            brand: brand,
-            reason: reason,
-            smoking: smoking,
-            status: status,
-            username: username,
-            submittedAt: serverTimestamp()
+            el.textContent = "";
         });
+}
 
-        await signOut(auth);
 
-        this.reset();
+/* SHOW SIGN UP */
+
+document
+    .getElementById("showSignup")
+    .addEventListener("click", () => {
+
+        showPage(signupPage);
+
+    });
+
+
+/* BACK TO LOGIN */
+
+document
+    .getElementById("backToLogin")
+    .addEventListener("click", () => {
 
         showPage(loginPage);
 
-        showMessage(
-            "loginMessage",
-            "Successful ang Sign Up! Maaari ka nang mag-login.",
-            "success"
-        );
+    });
 
-    } catch (error) {
 
-        console.error(error);
+/* SIGN UP */
 
-        let message = "Hindi successful ang Sign Up.";
+document
+    .getElementById("signupForm")
+    .addEventListener("submit", async function(e) {
 
-        if (error.code === "auth/email-already-in-use") {
-            message = "Ginagamit na ang username na ito.";
+        e.preventDefault();
+
+
+        const nickname =
+            document.getElementById("nickname").value.trim();
+
+        const brand =
+            document.getElementById("brand").value.trim();
+
+        const reason =
+            document.getElementById("reason").value.trim();
+
+        const smoking =
+            document.getElementById("smoking").value;
+
+        const status =
+            document.getElementById("status").value;
+
+        const username =
+            document
+                .getElementById("signupUsername")
+                .value
+                .trim();
+
+        const password =
+            document.getElementById("signupPassword").value;
+
+        const confirm =
+            document.getElementById("confirmPassword").value;
+
+
+        /* PASSWORD LENGTH */
+
+        if (password.length < 8) {
+
+            showMessage(
+                "signupMessage",
+                "Ang password ay dapat hindi bababa sa 8 characters.",
+                "error"
+            );
+
+            return;
         }
 
-        if (error.code === "auth/weak-password") {
-            message = "Masyadong mahina ang password.";
+
+        /* CONFIRM PASSWORD */
+
+        if (password !== confirm) {
+
+            showMessage(
+                "signupMessage",
+                "Hindi magkapareho ang Password at Confirm Password.",
+                "error"
+            );
+
+            return;
         }
 
-        showMessage(
-            "signupMessage",
-            message,
-            "error"
-        );
-    }
-});
 
-document.getElementById("loginForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
+        /*
+        Firebase Authentication requires an email.
 
-    const username =
-        document.getElementById("loginUsername").value.trim();
+        Ginagamit lang natin ang internal email na ito
+        para ma-associate ang username sa Firebase Auth.
+        */
 
-    const password =
-        document.getElementById("loginPassword").value;
+        const email =
+            username.toLowerCase() +
+            "@allstar-demo.local";
 
-    if (!/^[0-9]{8}$/.test(password)) {
-        showMessage(
-            "loginMessage",
-            "Maglagay ng 8-digit password.",
-            "error"
-        );
-        return;
-    }
 
-    const email = username.toLowerCase() + "@allstar-demo.local";
+        try {
 
-    try {
+            const userCredential =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
-        const userCredential =
+
+            const user =
+                userCredential.user;
+
+
+            /*
+            IMPORTANT:
+            Hindi natin inilalagay ang password sa Firestore.
+            */
+
+            await addDoc(
+                collection(db, "submissions"),
+                {
+
+                    uid: user.uid,
+
+                    nickname: nickname,
+
+                    brand: brand,
+
+                    reason: reason,
+
+                    smoking: smoking,
+
+                    status: status,
+
+                    username: username,
+
+                    submittedAt: serverTimestamp()
+
+                }
+            );
+
+
+            await signOut(auth);
+
+
+            this.reset();
+
+
+            showPage(loginPage);
+
+
+            showMessage(
+                "loginMessage",
+                "Successful ang Sign Up! Maaari ka nang mag-login.",
+                "success"
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            let message =
+                "Hindi successful ang Sign Up.";
+
+
+            if (
+                error.code ===
+                "auth/email-already-in-use"
+            ) {
+
+                message =
+                    "Ginagamit na ang username na ito.";
+
+            }
+
+
+            else if (
+                error.code ===
+                "auth/weak-password"
+            ) {
+
+                message =
+                    "Masyadong mahina ang password. Gumamit ng hindi bababa sa 8 characters.";
+
+            }
+
+
+            showMessage(
+                "signupMessage",
+                message,
+                "error"
+            );
+
+        }
+
+    });
+
+
+/* LOGIN */
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+
+        const username =
+            document
+                .getElementById("loginUsername")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("loginPassword")
+                .value;
+
+
+        if (password.length < 8) {
+
+            showMessage(
+                "loginMessage",
+                "Maglagay ng password na hindi bababa sa 8 characters.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const email =
+            username.toLowerCase() +
+            "@allstar-demo.local";
+
+
+        try {
+
             await signInWithEmailAndPassword(
                 auth,
                 email,
                 password
             );
 
-        const user = userCredential.user;
 
-        document.getElementById("welcomeName").textContent =
-            username;
+            document
+                .getElementById("welcomeName")
+                .textContent = username;
 
-        this.reset();
 
-        showPage(homePage);
+            this.reset();
 
-    } catch (error) {
 
-        console.error(error);
+            showPage(homePage);
 
-        showMessage(
-            "loginMessage",
-            "Maling username o password.",
-            "error"
-        );
-    }
-});
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
+        } catch (error) {
 
-    try {
-        await signOut(auth);
+            console.error(error);
 
-        showPage(loginPage);
 
-        showMessage(
-            "loginMessage",
-            "Naka-logout ka na.",
-            "success"
-        );
+            showMessage(
+                "loginMessage",
+                "Maling username o password.",
+                "error"
+            );
 
-    } catch (error) {
-        console.error(error);
-    }
-});
-   </script>
+        }
+
+    });
+
+
+/* LOGOUT */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+        try {
+
+            await signOut(auth);
+
+            showPage(loginPage);
+
+            showMessage(
+                "loginMessage",
+                "Naka-logout ka na.",
+                "success"
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    });
+
+</script>
 
 </body>
 </html>
