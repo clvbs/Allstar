@@ -187,6 +187,14 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
 import {
     getFirestore,
     collection,
@@ -205,6 +213,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const loginPage = document.getElementById("loginPage");
@@ -212,13 +221,17 @@ const signupPage = document.getElementById("signupPage");
 const homePage = document.getElementById("homePage");
 
 function showPage(page) {
-    [loginPage, signupPage, homePage].forEach(p => p.classList.remove("active"));
+    [loginPage, signupPage, homePage].forEach(p =>
+        p.classList.remove("active")
+    );
+
     page.classList.add("active");
     clearMessages();
 }
 
 function showMessage(elementId, text, type) {
     const el = document.getElementById(elementId);
+
     el.textContent = text;
     el.className = "message " + type;
     el.style.display = "block";
@@ -235,7 +248,11 @@ function onlyFourDigits(input) {
     input.value = input.value.replace(/[^0-9]/g, "").slice(0, 4);
 }
 
-["loginPassword", "signupPassword", "confirmPassword"].forEach(id => {
+[
+    "loginPassword",
+    "signupPassword",
+    "confirmPassword"
+].forEach(id => {
     document.getElementById(id).addEventListener("input", function() {
         onlyFourDigits(this);
     });
@@ -258,43 +275,157 @@ document.getElementById("signupForm").addEventListener("submit", async function(
     const smoking = document.getElementById("smoking").value;
     const status = document.getElementById("status").value;
     const username = document.getElementById("signupUsername").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if (!/^[0-9]{4}$/.test(password)) {
+        showMessage(
+            "signupMessage",
+            "Ang password ay dapat eksaktong 4 digits lamang.",
+            "error"
+        );
+        return;
+    }
+
+    if (password !== confirm) {
+        showMessage(
+            "signupMessage",
+            "Hindi magkapareho ang Password at Confirm Password.",
+            "error"
+        );
+        return;
+    }
+
+    /*
+      Firebase Authentication requires an email.
+      Gagawa tayo ng internal email mula sa username.
+    */
+    const email = username.toLowerCase() + "@allstar-demo.local";
 
     try {
+
+        const userCredential =
+            await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+        const user = userCredential.user;
+
         await addDoc(collection(db, "submissions"), {
-            nickname,
-            brand,
-            reason,
-            smoking,
-            status,
-            username,
+            uid: user.uid,
+            nickname: nickname,
+            brand: brand,
+            reason: reason,
+            smoking: smoking,
+            status: status,
+            username: username,
             submittedAt: serverTimestamp()
         });
 
+        await signOut(auth);
+
         this.reset();
+
         showPage(loginPage);
 
         showMessage(
             "loginMessage",
-            "Successful ang Sign Up!",
+            "Successful ang Sign Up! Maaari ka nang mag-login.",
             "success"
         );
 
     } catch (error) {
+
         console.error(error);
+
+        let message = "Hindi successful ang Sign Up.";
+
+        if (error.code === "auth/email-already-in-use") {
+            message = "Ginagamit na ang username na ito.";
+        }
+
+        if (error.code === "auth/weak-password") {
+            message = "Masyadong mahina ang password.";
+        }
 
         showMessage(
             "signupMessage",
-            "Hindi na-save ang information.",
+            message,
             "error"
         );
     }
 });
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    showPage(loginPage);
-    showMessage("loginMessage", "Naka-logout ka na.", "success");
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const username =
+        document.getElementById("loginUsername").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    if (!/^[0-9]{4}$/.test(password)) {
+        showMessage(
+            "loginMessage",
+            "Maglagay ng 4-digit password.",
+            "error"
+        );
+        return;
+    }
+
+    const email = username.toLowerCase() + "@allstar-demo.local";
+
+    try {
+
+        const userCredential =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+        const user = userCredential.user;
+
+        document.getElementById("welcomeName").textContent =
+            username;
+
+        this.reset();
+
+        showPage(homePage);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "loginMessage",
+            "Maling username o password.",
+            "error"
+        );
+    }
 });
-</script>
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+
+    try {
+        await signOut(auth);
+
+        showPage(loginPage);
+
+        showMessage(
+            "loginMessage",
+            "Naka-logout ka na.",
+            "success"
+        );
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+   </script>
 
 </body>
 </html>
