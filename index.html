@@ -113,7 +113,7 @@
 
             <label for="loginPassword">Password</label>
             <input id="loginPassword" type="password" inputmode="numeric"
-                   maxlength="4" pattern="[0-9]{4}" placeholder="4-digit password" required>
+                   maxlength="8" pattern="[0-9]{8}" placeholder="8-digit password" required>
 
             <button class="primary" type="submit">Login</button>
         </form>
@@ -157,12 +157,12 @@
 
             <label for="signupPassword">Password</label>
             <input id="signupPassword" type="password" inputmode="numeric"
-                   maxlength="4" pattern="[0-9]{4}" placeholder="4 digits only" required>
-            <div class="note">Password must contain exactly 4 numbers.</div>
+                   maxlength="8" pattern="[0-9]{8}" placeholder="8 digits only" required>
+            <div class="note">Password must contain exactly 8 numbers.</div>
 
             <label for="confirmPassword">Confirm Password</label>
             <input id="confirmPassword" type="password" inputmode="numeric"
-                   maxlength="4" pattern="[0-9]{4}" placeholder="Re-enter password" required>
+                   maxlength="8" pattern="[0-9]{8}" placeholder="Re-enter password" required>
 
             <button class="primary" type="submit">Sign Up</button>
         </form>
@@ -244,8 +244,8 @@ function clearMessages() {
     });
 }
 
-function onlyFourDigits(input) {
-    input.value = input.value.replace(/[^0-9]/g, "").slice(0, 4);
+function onlyEightDigits(input) {
+    input.value = input.value.replace(/[^0-9]/g, "").slice(0, 8);
 }
 
 [
@@ -367,10 +367,10 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const password =
         document.getElementById("loginPassword").value;
 
-    if (!/^[0-9]{4}$/.test(password)) {
+    if (!/^[0-9]{8}$/.test(password)) {
         showMessage(
             "loginMessage",
-            "Maglagay ng 4-digit password.",
+            "Maglagay ng 8-digit password.",
             "error"
         );
         return;
